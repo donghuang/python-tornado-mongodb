@@ -15,4 +15,5 @@ url=[
     (r'/',IndexHandler),
     (r'/login',LoginHandler),
     (r'/register',RegisterHandler),
+    (r'/logout',LogoutHandler),
     ]

@@ -23,8 +23,13 @@
                 <li><a href="#">One more separated link</a></li>
               </ul>
             </li>
-            <li ><a href="/login">登陆</a></li>
-            <li ><a href="/register">注册</a></li>
+            {% if not cookieName %}
+              <li ><a href="/login">登陆</a></li>
+              <li ><a href="/register">注册</a></li>
+            {% else %}
+              <li><a href='/' >欢迎：{{cookieName}}</a></li>
+              <li><a href='/logout' >注销</a></li>
+            {% end %}
           </ul>
         </div><!--/.nav-collapse -->
       </div>

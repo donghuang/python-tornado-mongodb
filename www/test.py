@@ -26,7 +26,7 @@ page = Page(title='DONGHUANG1')
 page.save()
 print '=====ok======'
 
-page1=Page.objects(title='DONGHUANG1').count()
+page1=Page.objects(title='DONGHUANG1111') or Page.objects(title='DONGHUANG1111')
 print page1
 
 define('port',default=8000,help="run on the given port",type=int)

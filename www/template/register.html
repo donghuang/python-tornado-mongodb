@@ -9,10 +9,12 @@
 <div class="signcontainer">
 <form id="form-register"  method="post" action="/register" class='well'>
     <h4 class="form-signin-heading"> 欢迎注册 </h4>
-    <div id='showinfo' style="color:#F00" class="uk-alert-danger" ></div>
+    <div id='showinfo' style="color:#F00" class="uk-alert-danger" >
+    	{% if msg %}{{msg}}{% end %}
+    </div>
 	<div class='form-group'>
 		
-		<input type='text' id='username' name='username' placeholder="用户名" class='form-control'/>
+		<input type='text' id='username' name='username' placeholder="用户名" class='form-control' />
 	</div>
 	<div class="form-group">
         

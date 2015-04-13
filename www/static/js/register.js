@@ -10,12 +10,14 @@ function check() {
     password2=document.getElementById('password2').value
     if (! username ) {
         document.getElementById("showinfo").innerHTML="请输入用户名";
+        
         return false;
      }else{
         document.getElementById("showinfo").innerHTML="";
      }
     if (! validateEmail(email.trim().toLowerCase()) ) {
         document.getElementById("showinfo").innerHTML="请输入正确的邮箱";
+        
         return false;
      }else{
         document.getElementById("showinfo").innerHTML="";
