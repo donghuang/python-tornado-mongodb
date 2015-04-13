@@ -1,0 +1,33 @@
+{%extends '_base.html'%}
+{% block title %}注册{% end block %}
+
+{% block beforehead %}
+<script src="{{ static_url('js/register.js') }}"></script>
+{%end%}
+
+{% block content %}
+<div class="signcontainer">
+<form id="form-register"  method="post" action="/register" class='well'>
+    <h4 class="form-signin-heading"> 欢迎注册 </h4>
+    <div id='showinfo' style="color:#F00" class="uk-alert-danger" ></div>
+	<div class='form-group'>
+		
+		<input type='text' id='username' name='username' placeholder="用户名" class='form-control'/>
+	</div>
+	<div class="form-group">
+        
+         <input type="text" id="email" name="email" maxlength="50" placeholder="邮箱" class="form-control">
+    </div>
+	<div class='form-group'>
+		
+		<input type='password' id='password' name='password' placeholder="设置密码" class='form-control'/>
+	</div>
+	<div class='form-group'>
+		
+		<input type='password' id='password2' name='password2' placeholder="确认密码" class='form-control'/>
+	</div>
+	<button type='submit' onclick="return check();" class='btn btn-primary'>注册</button>
+	<a href='/login'>  已有帐号，直接登录</a>
+</form>
+</div>
+{%end%}
