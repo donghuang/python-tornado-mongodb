@@ -1582,6 +1582,13 @@ pre code {
     margin-right: auto;
     margin-left: auto
 }
+.blogcontainer {
+  padding-top: 60px;
+  padding-right: 250px;
+  padding-left: 250px;
+  margin-right: auto;
+  margin-left: auto;
+}
 .signcontainer {
   padding-top: 80px;
   padding-right: 550px;
@@ -2556,6 +2563,42 @@ output {
   line-height: 1.42857143;
   color: #555;
 }
+.form-controltit {
+  display: block;
+  width: 80%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+       -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.form-controlcon {
+  display: block;
+  width: 100%;
+  height: 300px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+       -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
 .form-control {
   display: block;
   width: 100%;
@@ -2574,6 +2617,13 @@ output {
        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
           transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
+
+.search-form {
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  width:  200px;
+}
+
 .form-control:focus {
   border-color: #66afe9;
   outline: 0;
@@ -3451,7 +3501,7 @@ tbody.collapse.in {
   z-index: 1000;
   display: none;
   float: left;
-  min-width: 160px;
+  min-width: 120px;
   padding: 5px 0;
   margin: 2px 0 0;
   font-size: 14px;
@@ -4413,7 +4463,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-default {
-  background-color: #f8f8f8;
+  background-color: #ffffff;
   border-color: #e7e7e7;
 }
 .navbar-default .navbar-brand {
@@ -6365,6 +6415,13 @@ button.close {
 }
 .pull-left {
   float: left !important;
+  margin-left: 100px;
+}
+
+.pull-center {
+  float: right !important;
+  margin-right: 100px;
+  margin-top: 8px;
 }
 .hide {
   display: none !important;

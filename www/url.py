@@ -12,8 +12,12 @@ sys.setdefaultencoding('utf-8')
 from handler.base import *
 
 url=[
-    (r'/',IndexHandler),
+    (r'/',HomeHandler),
+    (r'/page/([0-9]+)',HomeHandler),
     (r'/login',LoginHandler),
     (r'/register',RegisterHandler),
     (r'/logout',LogoutHandler),
+    (r'/add',BlogeditHandler),
+    (r'/(edit|blog)/([0-9]+)',BlogeditHandler),
+    (r'/mangeblog',MangeblogHandler),
     ]

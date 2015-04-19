@@ -11,7 +11,7 @@ import tornado.httpserver
 
 from application import application
 from tornado.options import define,options
-from mongoengine.connection import connect,get_db
+from mongoengine import *
 
 define("port",default=8000,help="run on th given port",type=int)
 

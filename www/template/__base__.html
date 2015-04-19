@@ -2,17 +2,18 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-    {% block meta %}<!-- block meta  -->{% end block %}
-    <title>{% block title %} ? {% end block %} - Jaeger' Club</title>
+    	{% block meta %}<!-- block meta  -->{% end block %}
+    	<title>{% block title %} 首页 {% end block %} - Jaeger' Club</title>
 
 		<link href="{{ static_url('css/bootstrap.css') }}" rel='stylesheet' type='text/css'>
 		<script src="{{ static_url('js/jquery-2.1.3.js') }}"></script>
 		<script src="{{ static_url('js/bootstrap.js') }}"></script>
+		<script src="{{ static_url('js/vue.min.js') }}"></script>
 
-    {% block beforehead %}<!-- before head  -->{% end block %}
+    	{% block beforehead %}<!-- before head  -->{% end block %}
 	</head>
 	<body>
-    {%block topper%} {% end %}
+        {%block topper%} {% end %}
 		{%block content%} {% end %}
 		{%block footer%} {% end %}
 	</body>

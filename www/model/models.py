@@ -11,6 +11,24 @@ class User(Document):
     created_at = DateTimeField(default=datetime.datetime.now, required=True)
     meta = {'db_alias': 'blogdb'}
 
+class Blog(Document):
+    blogid=IntField(primary_key=True)
+    title = StringField(required=True)
+    content = StringField()
+    summary = StringField()
+    html = StringField()
+    category = StringField(default=u'未分类')
+    author = StringField()
+    tags = SortedListField(StringField())
+    comments = SortedListField(EmbeddedDocumentField('CommentEm'))
+    publish_time = DateTimeField(default=datetime.datetime.now, required=True)
+    update_time = DateTimeField(default=datetime.datetime.now, required=True)
+    meta = {'db_alias': 'blogdb'}
+
+class Blog1(Document):
+    id = IntField()
+    title = StringField(required=True)
+    meta = {'db_alias': 'blogdb'}
 
 class Diary(Document):
     title = StringField(required=True)
@@ -25,7 +43,7 @@ class Diary(Document):
     publish_time = DateTimeField(default=datetime.datetime.now, required=True)
     update_time = DateTimeField(default=datetime.datetime.now, required=True)
 
-    meta = {'allow_inheritance': True}
+    meta = {'db_alias': 'blogdb'}
 
 
 class Photo(Document):
@@ -80,5 +98,3 @@ class CommentEm(EmbeddedDocument):
     email = EmailField()
     publish_time = DateTimeField(default=datetime.datetime.now, required=True)
 
-if __name__ == '__main__':
-    user=User(name='dh',created_at='aa')

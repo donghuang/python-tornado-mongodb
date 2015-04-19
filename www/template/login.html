@@ -1,4 +1,4 @@
-{%extends '_base.html'%}
+{%extends '__base__.html'%}
 {% block title %}登陆{% end block %}
 
 {% block beforehead %}
@@ -6,7 +6,6 @@
 {%end%}
 
 {%block content%}
-<script src='static/checkpw.js'></script>
 <div class="signcontainer">
 <form action='/login' method='post' class='well'>
     <h4 class="form-signin-heading"> 登陆 </h4>
@@ -20,7 +19,7 @@
       <input type='password' id='password' name='password' placeholder="请输入密码" class='form-control'/>
     </div>
     <div class="checkbox">
-      <label><input type="checkbox" value="remember-me"> 下次自动登陆</label>
+      <label><input type="checkbox" name="rememberme"> 下次自动登陆</label>
     </div>
     <button type='submit' class='btn btn-primary' onclick='return check();'>登陆</button>
     <a href='/register'> 没有账号？立即注册</a>
