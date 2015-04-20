@@ -17,13 +17,14 @@ class Blog(Document):
     content = StringField()
     summary = StringField()
     html = StringField()
-    category = StringField(default=u'未分类')
+    category = StringField(default=u'unknow')
+    categorydesc = StringField(default=u'未分类')
     author = StringField()
     tags = SortedListField(StringField())
     comments = SortedListField(EmbeddedDocumentField('CommentEm'))
     publish_time = DateTimeField(default=datetime.datetime.now, required=True)
     update_time = DateTimeField(default=datetime.datetime.now, required=True)
-    meta = {'db_alias': 'blogdb'}
+    meta = {'db_alias': 'blogdb','ordering': ['-publish_time']}
 
 class Blog1(Document):
     id = IntField()

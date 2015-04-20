@@ -6,23 +6,41 @@ reload(sys)
 sys.setdefaultencoding('utf-8') 
 from tornado import web
 from model.models import User,Blog
-
+from mongoengine import *
 
 _RE_MD5 = re.compile(r'^[0-9a-f]{32}$')
 
+
+Categorys=dict(
+	bigdata='大数据',
+	datadev='数据开发',
+	python='Python',
+	shell='Shell',
+	spitslot='吐槽',
+	)
+ITNUM=3
 
 class BaseHandler(web.RequestHandler):
 	def get_current_user(self):
 		return self.get_secure_cookie("username")
 
 class HomeHandler(BaseHandler):
-	
 	def get(self,pn=1):
 		pn=int(pn)
-		blogs=Blog.objects()[(pn-1)*3:(pn-1)*3+3]
-		for blog in blogs:
-			blog.content=markdown.markdown(blog.content)[0:100]
-		self.render('home.html',cookieName=self.current_user,blogs=blogs,pn=pn,blog=None)
+		search = self.get_argument('search',None)
+		if search:
+			pn=int(self.get_argument('page',1))
+			blogs=Blog.objects(Q(title__contains=search)|Q(content__contains=search))
+			searchcnt=len(blogs)
+			blogs=blogs[(pn-1)*ITNUM:(pn-1)*ITNUM+ITNUM]
+			for blog in blogs:
+				blog.content=markdown.markdown(blog.content)[0:100]
+			self.render('search.html',cookieName=self.current_user,blogs=blogs,pn=pn,search=search,searchcnt=searchcnt)
+		else:
+			blogs=Blog.objects()[(pn-1)*ITNUM:(pn-1)*ITNUM+ITNUM]
+			for blog in blogs:
+				blog.content=markdown.markdown(blog.content)[0:100]
+			self.render('home.html',cookieName=self.current_user,blogs=blogs,pn=pn,blog=None)
 
 
 class LoginHandler(BaseHandler):
@@ -34,7 +52,7 @@ class LoginHandler(BaseHandler):
 		password=self.get_argument('password',None)
 		rememberme=self.get_argument('rememberme',None)
 		reg_user=User.objects(name=username) or User.objects(email=username)
-
+		self.set_secure_cookie("username", username)
 		if reg_user:
 			if reg_user[0].password==password:
 				rememberme and self.set_secure_cookie("username", username)
@@ -104,13 +122,23 @@ class BlogeditHandler(BaseHandler):
 
 	def post(self):
 		category=self.get_argument('category',None)
+		categorydesc=Categorys[category]
 		blogtitle=self.get_argument('blogtitle',None)
 		blogcontent=self.get_argument('blogcontent',None)
 		blogauthor=self.get_argument('blogauthor',None)
-		if blogtitle and blogcontent and blogauthor:
+		if blogtitle and blogcontent:
+			if not blogauthor:
+				blogauthor=self.current_user
 			blogid=int(Blog.objects.exec_js('getNextSequence("id")'))
-			blog=Blog(blogid=blogid,title=blogtitle,content=blogcontent,author=blogauthor,category=category)
+			blog=Blog(blogid=blogid,
+				title=blogtitle,
+				content=blogcontent,
+				author=blogauthor,
+				category=category,
+				categorydesc=categorydesc
+				)
 			blog.save()
+			self.redirect("/")
 		self.render('editblog.html',cookieName=self.current_user,blogs=None,blog=None)
 
 class MangeblogHandler(BaseHandler):
@@ -119,6 +147,16 @@ class MangeblogHandler(BaseHandler):
 		for blog in blogs:
 			blog.content=blog.content[0:90]
 		self.render('mangeblog.html',cookieName=self.current_user,blogs=blogs)
-		
 
-		
+class CategorygHandler(BaseHandler):
+	def get(self,category=None,pn=1):
+		pn=int(pn)
+		if category is None:
+			self.redirect('/')
+		if category in Categorys:
+			blogs=Blog.objects(category=category)[(pn-1)*ITNUM:(pn-1)*ITNUM+ITNUM]
+			for blog in blogs:
+				blog.content=markdown.markdown(blog.content)[0:100]
+			self.render('category.html',cookieName=self.current_user,blogs=blogs,pn=pn,category=category)
+		else:
+			self.render('category.html',cookieName=self.current_user,blogs=None,pn=pn,category=category)

@@ -11,13 +11,13 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">技术分类<span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">大数据</a></li>
-                    <li><a href="#">数据开发</a></li>
-                    <li><a href="logout">Python</a></li>
-                    <li><a href="logout">Shell</a></li>
+                    <li><a href="/categorys/bigdata">大数据</a></li>
+                    <li><a href="/categorys/datadev">数据开发</a></li>
+                    <li><a href="/categorys/python">Python</a></li>
+                    <li><a href="/categorys/shell">Shell</a></li>
                   </ul>
                 </li>
-              <li role="presentation" ><a href="#">吐槽</a></li>
+              <li role="presentation" ><a href="/categorys/spitslot">吐槽</a></li>
             </ul>
             <ul class="nav nav-pills pull-right">
               
@@ -38,8 +38,8 @@
               {% end %}
             </ul>
             <ul class="nav nav-pills pull-center">
-              <form action="search" method='GET'>
-                <input name="q" type="search" value="" placeholder="search" class="search-form"  >
+              <form action="/?search">
+                <input name="search" value="" placeholder="search" class="search-form"  >
               </form>
             </ul>
           </nav>

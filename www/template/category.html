@@ -18,23 +18,6 @@
         </ul>
       {% end %}
     {% end %}
-
-    {% if blog %}
-      <ul>
-        <li>
-            <hr />
-            <a href='/categorys/{{blog.category}}' class='text-success 6'>{{blog.categorydesc}}</a>
-            <h6 style="float:right;">{{blog.publish_time.strftime( '%Y/%m/%d %H:%M' )}}</h6>
-            <h6 style="float:right;">{{ blog.author+'· ' }}</h6>
-            <br/>
-            <br/>
-            <a href='/blog/{{blog.id}}' class='text-primary h3'>{{blog.title}}</a></p>
-            <p id='blogcontent{{ blog.id }}' >{{ blog.content }} </p>
-        </li>
-      </ul>
-      <hr />
-    {% end %}
-
      
     {% if pn > 1 %}
       <hr />
@@ -46,7 +29,7 @@
       <hr />
       <ul>
         <a class="left" href="#" style="float:left;">上一页<a/>
-        <a class="right" href="/page/2" style="float:right;">下一页<a/>
+        <a class="right" href="/categorys/{{category}}/2" style="float:right;">下一页<a/>
       </ul>  
     {% end %}
   </div>
