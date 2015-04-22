@@ -18,8 +18,9 @@ url=[
     (r'/register',RegisterHandler),
     (r'/logout',LogoutHandler),
     (r'/add',BlogeditHandler),
-    (r'/(edit|blog)/([0-9]+)',BlogeditHandler),
+    (r'/(edit|blog|del|update)/([0-9]+)',BlogeditHandler),
     (r'/mangeblog',MangeblogHandler),
     (r'/categorys/([a-z]+)',CategorygHandler),
     (r'/categorys/([a-z]+)/([0-9]+)',CategorygHandler),
+    (r'/posts/comments/([0-9]+)',CommentHandler),
     ]

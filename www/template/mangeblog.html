@@ -22,7 +22,9 @@
             <td>{{ bo.author }}</td>
             <td>{{ bo.title }}</td>
             <td>{{ bo.content }}</td>
-            <td><a href="/edit/{{ bo.id }}">编辑</a></td>
+            <td style="width: 80px">
+              <a href="/edit/{{ bo.id }}">编辑</a>&nbsp;&nbsp;<a href="/del/{{ bo.id }}">删除</a>
+            </td>
             </tr>
         {% end %}
         {% end %}

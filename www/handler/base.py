@@ -5,7 +5,7 @@ import sys,re,markdown
 reload(sys)
 sys.setdefaultencoding('utf-8') 
 from tornado import web
-from model.models import User,Blog
+from model.models import *
 from mongoengine import *
 
 _RE_MD5 = re.compile(r'^[0-9a-f]{32}$')
@@ -87,9 +87,8 @@ class RegisterHandler(BaseHandler):
 		else:
 			user=User(name=username,email=email,password=password)
 			user.save()
-			blogs=Blog.objects()
-			#self.set_secure_cookie("username", username)
-			self.render('home.html',cookieName=username,blogs=blogs,blog=None,pn=None)
+			self.set_secure_cookie("username", username)
+			self.redirect('/')
 
 class LogoutHandler(BaseHandler):
 	def get(self):
@@ -115,35 +114,52 @@ class BlogeditHandler(BaseHandler):
 			blog and self.render('home.html',cookieName=self.current_user,blog=blog,pn=None,blogs=None)
 		elif method=='edit' and blogid is not None:
 			blog=Blog.objects(blogid=blogid)[0]
-			blog.content=blog.content
-			blog and self.render('editblog.html',cookieName=self.current_user,blog=blog,pn=None,blogs=None)			
+			blog and self.render('editblog.html',cookieName=self.current_user,blog=blog,pn=None,blogs=None)
+		elif method=='del' and blogid is not None:
+			blog=Blog.objects(blogid=blogid)[0]
+			blog.delete()
+			self.redirect('/mangeblog')
 		else:
 			self.render('editblog.html',cookieName=self.current_user,blogs=None,blog=None)
 
-	def post(self):
+	def post(self,method=None,blogid=None):
 		category=self.get_argument('category',None)
 		categorydesc=Categorys[category]
 		blogtitle=self.get_argument('blogtitle',None)
 		blogcontent=self.get_argument('blogcontent',None)
 		blogauthor=self.get_argument('blogauthor',None)
-		if blogtitle and blogcontent:
-			if not blogauthor:
-				blogauthor=self.current_user
-			blogid=int(Blog.objects.exec_js('getNextSequence("id")'))
-			blog=Blog(blogid=blogid,
-				title=blogtitle,
-				content=blogcontent,
-				author=blogauthor,
-				category=category,
-				categorydesc=categorydesc
-				)
+		if not blogauthor:
+			blogauthor=self.current_user
+		if method=='update':
+			blog=Blog.objects(blogid=blogid)[0]
+			blog.title=blogtitle
+			blog.content=blogcontent
+			blog.author=blogauthor
+			blog.category=category
+			blog.categorydesc=categorydesc
+			blog.update_time=datetime.datetime.now
 			blog.save()
-			self.redirect("/")
+			self.redirect('/mangeblog')
+		else:
+			if blogtitle and blogcontent:
+				blogid=int(Blog.objects.exec_js('getNextSequence("id")'))
+				blog=Blog(blogid=blogid,
+					title=blogtitle,
+					content=blogcontent,
+					author=blogauthor,
+					category=category,
+					categorydesc=categorydesc
+					)
+				user=User.objects(name=self.current_user)[0]
+				blog.user=user
+				blog.save()
+				self.redirect("/")
 		self.render('editblog.html',cookieName=self.current_user,blogs=None,blog=None)
 
 class MangeblogHandler(BaseHandler):
 	def get(self):
-		blogs=Blog.objects(author=self.current_user)
+		user=User.objects(name=self.current_user)[0]
+		blogs=Blog.objects(user=user.id)
 		for blog in blogs:
 			blog.content=blog.content[0:90]
 		self.render('mangeblog.html',cookieName=self.current_user,blogs=blogs)
@@ -160,3 +176,16 @@ class CategorygHandler(BaseHandler):
 			self.render('category.html',cookieName=self.current_user,blogs=blogs,pn=pn,category=category)
 		else:
 			self.render('category.html',cookieName=self.current_user,blogs=None,pn=pn,category=category)
+
+class CommentHandler(BaseHandler):
+	def post(self,blogid=None):
+		blog=Blog.objects(blogid=blogid)[0]
+		commentcontent=self.get_argument('commentcontent',None)
+		username = self.current_user or '路人'
+		if not username or not commentcontent:
+			self.redirect('/blog/'+blogid)
+		comment=Comments(content=commentcontent,username=username)
+		comment.save()
+		blog.comments.insert(0,comment)
+		blog.save()
+		self.redirect('/blog/'+blogid)

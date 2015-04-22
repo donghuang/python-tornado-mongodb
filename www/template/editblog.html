@@ -4,11 +4,11 @@
 {%block content%}
 
 {% if blog %}
-    <form method='post' class='blogcontainer'>
+    <form method='post' action="/update/{{ blog.blogid }}" class='blogcontainer'>
         <div class='form-group'>
-            分类:<select class='form-controltit'>  
-                    <option value ="bigdata" >大数据</option>  
-                    <option value ="datadev" selected="true">数据开发</option>  
+            分类:<select class='form-controltit' name='category' >  
+                    <option value ="bigdata" selected="true">大数据</option>  
+                    <option value ="datadev">数据开发</option>  
                     <option value="python">Python</option>  
                     <option value="shell">Shell</option>  
                     <option value="spitslot">吐槽</option>  
@@ -17,7 +17,7 @@
 
         <div class='form-group'> 
             标题:<input type='text' id='blogtitle' name='blogtitle' placeholder="输入标题" 
-                class='form-controltit' value="{{ blog.title }}" />   
+                class='form-controltit' value="{{ blog.title }}" />  
         </div>
 
         <div class='form-group'>
@@ -28,14 +28,14 @@
           作者：<input type='textarea' id='blogauthor' name='blogauthor' placeholder="输入作者" 
                 class='form-control' value="{{ blog.author }}" />
         </div>
-        <button type='submit' class='btn btn-primary'>更新</button>
+        <button type='submit' class='btn btn-primary'>保存更新</button>
     </form>
 {% else %}
     <form method='post' class='blogcontainer'>
         <div class='form-group'>
             分类:<select name="category" class='form-controltit'>  
-                    <option value ="bigdata" >大数据</option>  
-                    <option value ="datadev" selected="true">数据开发</option>  
+                    <option value ="bigdata" selected="true">大数据</option>  
+                    <option value ="datadev" >数据开发</option>  
                     <option value="python">Python</option>  
                     <option value="shell">Shell</option>  
                     <option value="spitslot">吐槽</option>  

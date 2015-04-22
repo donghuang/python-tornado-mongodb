@@ -10,8 +10,8 @@
             <a href='/categorys/{{bo.category}}' class='text-success 6'>{{bo.categorydesc}}</a>
             <h6 style="float:right;">{{bo.publish_time.strftime( '%Y/%m/%d %H:%M' )}}</h6>
             <h6 style="float:right;">{{ bo.author+'· ' }}</h6>
-            <br/>
-            <br/>
+            <br>
+            <br>
             <a href='/blog/{{bo.id}}' class='text-primary h3'>{{bo.title}}</a></p>
             <p id='blogcontent{{ bo.id }}' >{{ bo.content }} </p>
           </li>
@@ -26,16 +26,43 @@
             <a href='/categorys/{{blog.category}}' class='text-success 6'>{{blog.categorydesc}}</a>
             <h6 style="float:right;">{{blog.publish_time.strftime( '%Y/%m/%d %H:%M' )}}</h6>
             <h6 style="float:right;">{{ blog.author+'· ' }}</h6>
-            <br/>
-            <br/>
+            <br>
+            <br>
             <a href='/blog/{{blog.id}}' class='text-primary h3'>{{blog.title}}</a></p>
             <p id='blogcontent{{ blog.id }}' >{{ blog.content }} </p>
+
         </li>
       </ul>
+      <ul>
+        <hr />  
+        <h4 style="float:left;">文章评论</h4>
+        <form action="/posts/comments/{{blog.id}}" method='post' class='commentcontainer'>
+            <textarea id="commentcontent" name='commentcontent' placeholder="输入内容" class='form-controlcom'/> </textarea>
+             <br>
+            <button type='submit' class='btn' style="float:right;">提交评论</button>
+        </form>
+        <br><br>
+      </ul>
+       
+      <ul>
       <hr />
+      {% if blog.comments %}
+        {% for comment in blog.comments %}
+          <h6 style="float:left;color: #6A5ACD">{{ comment.username+'· ' }}</h6>
+          <h6 style="float:left;">{{comment.publish_time.strftime( '%Y/%m/%d %H:%M' )}}</h6>
+          <br><br>
+          <p >{{comment.content}}</p>
+          
+          <br>
+        {% end %}
+        <hr />
+      {% else %}
+          暂无评论
+          <hr />
+      {% end %}
+      </ul>
     {% end %}
 
-     
     {% if pn > 1 %}
       <hr />
       <ul>
