@@ -17,7 +17,7 @@ define("port",default=8000,help="run on th given port",type=int)
 
 
 #define("MogoClietn",default=connect(db='blogdb',alias='blogdb',host='192.168.182.80',port=27017,username='blogetl',password='blogetl'))
-MogoClient=connect(db='blogdb',alias='blogdb',host='192.168.182.80',port=27017,username='blogetl',password='blogetl')
+MogoClient=connect(db='blogdb',alias='blogdb',host='127.0.0.1',port=27017,username='blogetl',password='blogetl')
 
 def main():
     tornado.options.parse_command_line()

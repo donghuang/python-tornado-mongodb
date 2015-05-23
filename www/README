@@ -8,3 +8,70 @@
 5.目录optsql：存放操作数据库的文件，比如各种读取或者写入数据库的类或函数，都放在这里面的某些文件中
 6.目录static：存放静态文件，就是上文说的比如CSS，JS，图片等，为了更清晰，在这个目录里面，还可建立子目录
 7.目录template：存放.html的模板（在更大型的项目中，可能会设计多个目录来存放不同的模板，或者在里面再有子目录进行区分）
+
+===========
+ 生产部署
+===========
+部署到的asw ec2上面,步骤说明一下
+ 1.环境准备，Ubuntu Server 14.04
+ 2.安装mongodb mongoengine tornado 
+ 3.安装Nginx:高性能Web服务器+负责反向代理
+       gunicorn：高性能WSGI服务器；
+       gevent：把Python同步代码变成异步协程的库；
+       Supervisor：监控服务进程的工具；
+    sudo apt-get install nginx gunicorn python-gevent supervisor
+ 4.配置Supervisor
+ 编写一个Supervisor的配置文件pytornado.conf，存放到/etc/supervisor/conf.d/目录下：
+command     = python /home/ubuntu/srv/python-tornado-mongodb/www/server.py
+directory   = /home/ubuntu/srv/python-tornado-mongodb/www
+user        = ubuntu
+startsecs   = 3
+
+redirect_stderr         = true
+stdout_logfile_maxbytes = 50MB
+stdout_logfile_backups  = 10
+stdout_logfile          = /home/ubuntu/srv/python-tornado-mongodb/log/app.log
+
+然后重启Supervisor
+$ sudo supervisorctl reload
+$ sudo supervisorctl start awesome
+$ sudo supervisorctl status
+
+5.配置Nginx
+Supervisor只负责运行gunicorn，还需要配置Nginx。把配置文件pytornado放到/etc/nginx/sites-available/目录下：
+server {
+    listen      80; # 监听80端口
+
+    root       /home/ubuntu/srv/python-tornado-mongodb/www;
+    access_log /home/ubuntu/srv/python-tornado-mongodb/log/access_log;
+    error_log  /home/ubuntu/srv/python-tornado-mongodb/log/error_log;
+
+    # server_name awesome.liaoxuefeng.com; # 配置域名
+
+    # 处理静态文件/favicon.ico:
+    location /favicon.ico {
+        root /home/ubuntu/srv/python-tornado-mongodb/www;
+    }
+
+    # 处理静态资源:
+    location ~ ^\/static\/.*$ {
+        root /home/ubuntu/srv/python-tornado-mongodb/www;
+    }
+
+    # 动态请求转发到9000端口(gunicorn):
+    location / {
+        proxy_pass       http://127.0.0.1:8080;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+然后在/etc/nginx/sites-enabled/目录下创建软链接：
+$ pwd
+/etc/nginx/sites-enabled
+$ sudo ln -s /etc/nginx/sites-available/pytornado default
+让Nginx重新加载配置文件
+$ sudo /etc/init.d/nginx reload
+
+6.mongodb初始化
+  用户，库，开启权限验证，sequence函数创建
